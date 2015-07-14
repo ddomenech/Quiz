@@ -12,7 +12,8 @@ body {
 }
 
 #page-wrap > .main {
-    border: 1px solid #999;
+    border: 1px solid #a3be7a;
+    border-radius: 5px;
     padding: 1%;
     margin-bottom: 1px;
     color: black;
@@ -22,7 +23,7 @@ section > div {
     padding: 20px;
 }
 header, nav, section {
-    background: #eee;
+    background: #fef;
     text-align: center;
 }
 footer {

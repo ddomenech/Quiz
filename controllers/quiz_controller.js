@@ -21,7 +21,12 @@ exports.answer = function(req, res, next) {
 
 //GET /quizes
 exports.index = function(req, res, next) {
-  models.Quiz.findAll().then(function(quizes){
+  var search = "";
+  search = (req.query.search == "" || typeof req.query.search == "undefined")? "": req.query.search ;
+  console.log(search);
+  search = "%" + search.replace(/\s+/g, '%')+ "%";
+  console.log("Search replace: "+ search);
+  models.Quiz.findAll({where: ["pregunta like ?", search]}).then(function(quizes){
     res.render('quizes/index.ejs', {quizes: quizes});
   });
 };

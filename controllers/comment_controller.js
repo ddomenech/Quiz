@@ -38,7 +38,7 @@ exports.create = function(req, res, next) {
         comment
         .save()
         .then(
-          function() { res.redirect('/quizes/'+req.params.quizId)}
+          function() { res.redirect('/quizes/'+req.params.quizId) }
         )
       }
     }

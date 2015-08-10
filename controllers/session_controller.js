@@ -41,3 +41,7 @@ exports.destroy = function(req, res, next) {
   delete req.session.user;
   res.redirect(req.session.redir.toString());
 };
+
+exports.autoLogout = function (req, res, next) {
+  res.redirect('/logout');
+};

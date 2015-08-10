@@ -10,8 +10,10 @@ var session = require('express-session');
 
 var routes = require('./routes/index');
 //var users = require('./routes/users');
-
+var oldtime;
 var app = express();
+
+var sessionController = require('./controllers/session_controller');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,6 +39,26 @@ app.use(function(req, res, next) {
   //Hacer vibisble req.session en las vistas
   res.locals.session = req.session;
   next();
+});
+
+app.use(function(req, res, next){
+  var autoLogout = false;
+  if (req.session.user) {
+    console.log(typeof oldtime);
+    if (typeof oldtime == 'undefined') {
+      oldtime = new Date();
+    }
+    var time = new Date();
+    console.log(time);
+    console.log(oldtime);
+    console.log('tiempo en milis:' + ((time-oldtime)/1000));
+    if ((time-oldtime)/1000 > 120) {
+      sessionController.autoLogout;
+      autoLogout = true;
+    }
+    oldtime = time;
+  }
+  if (!autoLogout) next();
 });
 
 app.use('/', routes);

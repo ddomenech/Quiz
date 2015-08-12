@@ -43,22 +43,13 @@ app.use(function(req, res, next) {
 
 app.use(function(req, res, next){
   var autoLogout = false;
+  console.log("Comprueba Usuario esta Logeado");
   if (req.session.user) {
-    console.log(typeof oldtime);
-    if (typeof oldtime == 'undefined') {
-      oldtime = new Date();
-    }
-    var time = new Date();
-    console.log(time);
-    console.log(oldtime);
-    console.log('tiempo en milis:' + ((time-oldtime)/1000));
-    if ((time-oldtime)/1000 > 120) {
-      sessionController.autoLogout;
-      autoLogout = true;
-    }
-    oldtime = time;
+    console.log("Entra al autologAut");
+    sessionController.autoLogout(req, res, next);
+    if (typeof req.session.user == "undefined") { autoLogout = true;}
   }
-  if (!autoLogout) next();
+  if (!autoLogout) { next() };
 });
 
 app.use('/', routes);

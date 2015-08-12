@@ -1,4 +1,5 @@
 //MW de autorización de acceso HTTP restringidos
+var self = this;
 exports.loginRequired = function(req, res, next) {
   if (req.session.user) {
     next();
@@ -32,6 +33,8 @@ exports.create = function(req, res, next) {
     //Crear req.session.user y guardar campos id y username
     //La sesión se define por la existencia de: req.session.user
     req.session.user = {id:user.id, username:user.username};
+    req.session.time = new Date();
+    console.log("hora login: "+ req.session.time);
     res.redirect(req.session.redir.toString());
   });
 };
@@ -39,9 +42,18 @@ exports.create = function(req, res, next) {
 //DELETE destroy
 exports.destroy = function(req, res, next) {
   delete req.session.user;
+  delete req.session.time;
   res.redirect(req.session.redir.toString());
 };
 
 exports.autoLogout = function (req, res, next) {
-  res.redirect('/logout');
+  var time = new Date();
+  console.log("variable time: " + time);
+  console.log("session time: " + req.session.time);
+  console.log("tiempo trascurrido: "+ (time - new Date(req.session.time))/1000);
+  if ((time - new Date(req.session.time))/1000 > 120) {
+    delete req.session.user;
+    delete req.session.time;
+    res.redirect(req.session.redir.toString());
+  } else {req.session.time = time;}
 };
